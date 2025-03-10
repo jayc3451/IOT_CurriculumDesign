@@ -1,0 +1,52 @@
+<!--------综合实验--------->
+办公楼检测人，温湿度，控制制冷低碳
+
+
+
+1、门禁
+   功能
+   模块：RFID刷卡/人脸（有时间的话）、舵机、Lora
+
+2、办公室1/2
+     功能：
+     模块：二氧化碳、火焰+烟雾、光敏、超声波检测人、继电器、补光、蜂鸣器、wifi-tcp传输数据给主机
+
+3、主机：
+     功能：前端框架+配置路由组网，接收数据，上传云端     
+     模块：Lora接收、wifi接收
+
+4、后台：
+     数据训练
+
+问题汇总：
+platformio 下载单片机的依赖直接去GitHub上下载然后复制到对应目录
+
+Lora配网 低功耗TypeA TypeC模式 3.3V电平转换 加密 有时间加个拍照+上传，前端传输卡号和姓名
+
+mqtt SubPubClient.h json报文最长字节为256(加上心跳包等) 超过则发送失败 需要分此发布或者将PubSubClient.h的宏定义MQTT_MAX_PACKET_SIZE改为512
+
+ArduinoJson.h版本要用6.15.1 	esp8266
+
+tricker.attach 不能执行很长很复杂的函数 会不能喂狗强制重启
+
+esp32s3串口1引脚不对图，尝试直接重映射，又好像是串口1和spi flash有冲突，有的说用串口2
+
+不同设备要申请不同的token
+
+ts没有import并引用不会运行(即便setIsnterval）
+
+
+发送端
+接线 连dbg串口
+相关指令
+AT+NCONFIG=D2D,<ADDR>,<FREQGRP>,<LEMODE>,<TXPWR>,<RATE>\r\n
+AT+SETKEY=ADD,<KEY>,<CRC32>\r\n
+AT+SEND=<LEN>,<DATA>,<DST>,<WAKE>,<QOS>,<TTL>\r\n
+
+AT+NCONFIG=D2D,1122,10,0,20,2\r\n	// 节点地址1122,频点组号10,typeA,20dbm,19.2kbps
+AT+SETKEY=ADD,18025573826180255738261802557382,C48A5FAE\r\n	// 密钥以及crc校验
+AT+SEND=6,018025573826,3344,1,0,0
+
+
+
+
